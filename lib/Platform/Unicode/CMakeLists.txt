@@ -7,6 +7,7 @@ set(source_files
    PlatformUnicodeJava.cpp
    PlatformUnicodeCF.cpp
    PlatformUnicodeICU.cpp
+   PlatformUnicodeASCII.cpp
    PlatformUnicodeEmscripten.cpp
    CharacterProperties.cpp
 )
@@ -26,4 +27,6 @@ else()
   )
 endif()
 
-hermes_link_icu(hermesPlatformUnicode)
+if (NOT HERMES_UNICODE_ASCII_ONLY)
+  hermes_link_icu(hermesPlatformUnicode)
+endif()

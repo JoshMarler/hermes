@@ -245,6 +245,9 @@ set(HERMES_BUILD_APPLE_FRAMEWORK ON CACHE BOOL
 set(HERMES_BUILD_APPLE_DSYM OFF CACHE BOOL
   "Whether to build a DWARF debugging symbols bundle")
 
+set(HERMES_UNICODE_ASCII_ONLY OFF CACHE BOOL
+    "Removes the need for ICU and other UNICODE support libraries.")
+
 if (HERMES_IS_ANDROID)
   set(HERMES_IS_MOBILE_BUILD TRUE)
 
@@ -389,6 +392,9 @@ endif()
 if (NOT (ANDROID_LINUX_PERF_PATH STREQUAL ""))
   add_definitions(-DANDROID_LINUX_PERF_PATH="${ANDROID_LINUX_PERF_PATH}")
 endif()
+if (HERMES_UNICODE_ASCII_ONLY)
+    add_definitions(-DHERMES_UNICODE_ASCII_ONLY)
+endif()
 
 if (HERMES_ENABLE_INTL)
   if (HERMES_IS_ANDROID)
@@ -470,6 +476,9 @@ if (APPLE)
   include_directories(${ICU_INCLUDE_DIRS})
 elseif(EMSCRIPTEN)
   # Just ignore ICU on Emiscripten. For now.
+  set(ICU_FOUND 1)
+elseif(HERMES_UNICODE_ASCII_ONLY)
+  # Ignore ICU
   set(ICU_FOUND 1)
 endif()
 
